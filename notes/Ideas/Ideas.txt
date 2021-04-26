@@ -1,0 +1,7 @@
+MONSTERPEDIA
+
+slime
+	- hop
+	- low hp
+	- low damage
+	- splits once
