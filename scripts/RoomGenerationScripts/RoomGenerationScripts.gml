@@ -87,14 +87,14 @@ function scr_nextRoom() {
     global.PAUSE_TRANSITION = true;
     
     if (obj_gameStats.currentFloor == global.END_LEVELS_BEGIN) {
-        obj_gameStats.nextShopFloor += irandom_range(5, 10);
+        obj_gameStats.nextShopFloor = obj_gameStats.currentFloor + irandom_range(5, 10);
         
         fade_initializeFade(rm_win, c_black, 2000);
         exit;
     }
     
     if (obj_gameStats.currentFloor == obj_gameStats.nextShopFloor) {
-        obj_gameStats.nextShopFloor += irandom_range(5, 10);
+        obj_gameStats.nextShopFloor = obj_gameStats.currentFloor + irandom_range(5, 10);
         
         fade_initializeFade(rm_shop, c_black, 2000);
         exit;

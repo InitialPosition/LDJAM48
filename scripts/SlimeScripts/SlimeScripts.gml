@@ -116,5 +116,5 @@ function scr_smallSlimeDeath() {
 }
 
 function scr_smallSlimeInitDisable() {
-    alarm[1] = 30;
+    alarm[1] = 60;
 }

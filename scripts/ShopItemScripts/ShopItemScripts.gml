@@ -24,7 +24,13 @@ function scr_shopLoadItems() {
         item[2][1] = 50;
         item[3][1] = 50;
         item[4][1] = 80;
-    }
+    } else {
+		item[0][1] = 30;
+        item[1][1] = 80;
+        item[2][1] = 60;
+        item[3][1] = 60;
+        item[4][1] = 100;
+	}
     
     item[0][0] = "RESTORES 1 HP";
     item[0][2] = spr_item_hp;
