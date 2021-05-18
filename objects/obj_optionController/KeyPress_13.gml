@@ -3,7 +3,7 @@
 switch (selection) {
     case 0: 
         currentResolutionIndex++;
-        if (currentResolutionIndex > 6) {
+        if (currentResolutionIndex > 4) {
             currentResolutionIndex = 0;
         }
         
@@ -27,14 +27,20 @@ switch (selection) {
         
         break;
     
-    case 4:
+    case 2:
         window_set_fullscreen(global.IS_FULLSCREEN);
         scr_windowModifier_setWindowSize(global.WINDOW_WIDTH, global.WINDOW_HEIGHT);
-        
-        audio_group_set_gain(audiogroup_default, global.VOLUME_MUSIC, 0);
-        audio_group_set_gain(audiogroup_sfx, global.VOLUME_SOUND, 0);
         
         scr_saveConfig();
         
         break;
+       
+    case 5:
+    	
+    	if (!lock) {
+    		lock = true;
+    		instance_create_layer(0, 0, "Instances_Foreground", obj_keyRemapper);
+    	}
+    	
+    	break;
 }

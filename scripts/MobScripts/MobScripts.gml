@@ -39,7 +39,7 @@ function scr_mobUpdate() {
 function scr_mobKnockback() {
     speed = 0;
     
-    switch (obj_player.lastMovedDirection) {
+    switch (obj_player.lastAttackedDirection) {
         case 0:
             knockBackX = -knockbackForce;
             break;

@@ -3,13 +3,21 @@ function scr_initPlayer() {
     
     global.PAUSE_TRANSITION = false;
     
+    // set correct depth
+    depth = layer_get_depth(layer_get_id("Instances")) - 2;
+    
     // variables
     scr_playerUpdateMoveSpeed();
     acceleration = 1;
     groundFriction = 2;
     instantStopThreshold = 1;
     
-    lastMovedDirection = 1;     // L R U D
+    attackCooldown = obj_gameStats.attackSpeed;
+    canAttack = true;
+    lastAttackedDirection = 1;     // L R U D
+    
+    walkAnimationOverride = false;
+    walkAnimationOverrideDuration = attackCooldown;
     
     invulnerableTimer = 0;
     iFrameCount = 90;
@@ -58,18 +66,67 @@ function scr_playerUpdate() {
 }
 
 function scr_playerGetInput() {
-    left_pressed = keyboard_check(global.KEY_LEFT);
-    right_pressed = keyboard_check(global.KEY_RIGHT);
-    up_pressed = keyboard_check(global.KEY_UP);
-    down_pressed = keyboard_check(global.KEY_DOWN);
+    left_pressed = keyboard_check(global.KEY_LEFT) || 
+    gamepad_axis_value(0, gp_axislh) < -global.CONTROLLER_DEADZONE_MOVEMENT ||
+    gamepad_button_check(0, gp_padl);
+    
+    right_pressed = keyboard_check(global.KEY_RIGHT) || 
+    gamepad_axis_value(0, gp_axislh) > global.CONTROLLER_DEADZONE_MOVEMENT ||
+    gamepad_button_check(0, gp_padr);
+    
+    up_pressed = keyboard_check(global.KEY_UP) || 
+    gamepad_axis_value(0, gp_axislv) < -global.CONTROLLER_DEADZONE_MOVEMENT ||
+    gamepad_button_check(0, gp_padu);
+    
+    down_pressed = keyboard_check(global.KEY_DOWN) || 
+    gamepad_axis_value(0, gp_axislv) > global.CONTROLLER_DEADZONE_MOVEMENT ||
+    gamepad_button_check(0, gp_padd);
+    
+    
+    left_attack_pressed = keyboard_check(global.KEY_ATTACK_LEFT) || 
+    gamepad_axis_value(0, gp_axisrh) < -global.CONTROLLER_DEADZONE_ATTACK ||
+    gamepad_button_check(0, gp_face3);
+    
+    right_attack_pressed = keyboard_check(global.KEY_ATTACK_RIGHT) || 
+    gamepad_axis_value(0, gp_axisrh) > global.CONTROLLER_DEADZONE_ATTACK ||
+    gamepad_button_check(0, gp_face2);
+    
+    up_attack_pressed = keyboard_check(global.KEY_ATTACK_UP) || 
+    gamepad_axis_value(0, gp_axisrv) < -global.CONTROLLER_DEADZONE_ATTACK ||
+    gamepad_button_check(0, gp_face4);
+    
+    down_attack_pressed = keyboard_check(global.KEY_ATTACK_DOWN) || 
+    gamepad_axis_value(0, gp_axisrv) > global.CONTROLLER_DEADZONE_ATTACK ||
+    gamepad_button_check(0, gp_face1);
+}
+
+function scr_playerIsAttacking() {
+	return	keyboard_check(global.KEY_ATTACK_LEFT) ||
+			keyboard_check(global.KEY_ATTACK_RIGHT) ||
+			keyboard_check(global.KEY_ATTACK_UP) || 
+			keyboard_check(global.KEY_ATTACK_DOWN) ||
+			gamepad_axis_value(0, gp_axisrh) < -global.CONTROLLER_DEADZONE_ATTACK ||
+			gamepad_axis_value(0, gp_axisrh) > global.CONTROLLER_DEADZONE_ATTACK ||
+			gamepad_axis_value(0, gp_axisrv) < -global.CONTROLLER_DEADZONE_ATTACK ||
+			gamepad_axis_value(0, gp_axisrv) > global.CONTROLLER_DEADZONE_ATTACK ||
+			gamepad_button_check(0, gp_face3) ||
+			gamepad_button_check(0, gp_face2) ||
+			gamepad_button_check(0, gp_face4) ||
+			gamepad_button_check(0, gp_face1);
 }
 
 function scr_playerAttack() {
-    if keyboard_check_pressed(global.KEY_ATTACK) {
+    if (scr_playerIsAttacking() && canAttack) {
+    	
+    	// start cooldown
+    	canAttack = false;
+    	alarm[2] = attackCooldown;
+    	
     	// visual
     	var effect = instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, "Instances", obj_attack_effect);
         var attackRay = instance_create_layer(x + sprite_width / 2, y + sprite_height / 2, "Instances", obj_attack);
         
+        /**
         switch (lastMovedDirection) {
             case 0:
                 attackRay.image_angle = 270;
@@ -88,17 +145,53 @@ function scr_playerAttack() {
                 effect.image_angle = 0;
                 break;
         }
+        **/
+        
+        walkAnimationOverride = true;
+        alarm[1] = walkAnimationOverrideDuration;
+        
+        if (left_attack_pressed) {
+        	sprite_index = spr_player_walk_l;
+        	lastAttackedDirection = 0;
+        	
+            attackRay.image_angle = 270;
+            effect.image_angle = 270;
+        }
+        
+        else if (right_attack_pressed) {
+        	sprite_index = spr_player_walk_r;
+        	lastAttackedDirection = 1;
+        	
+            attackRay.image_angle = 90;
+            effect.image_angle = 90;
+        }
+        
+        else if (up_attack_pressed) {
+        	sprite_index = spr_player_walk_b;
+        	lastAttackedDirection = 2;
+        	
+            attackRay.image_angle = 180;
+            effect.image_angle = 180;
+        }
+        
+        else if (down_attack_pressed) {
+        	sprite_index = spr_player_walk_f;
+        	lastAttackedDirection = 3;
+        	
+            attackRay.image_angle = 0;
+            effect.image_angle = 0;
+        }
         
         audio_play_sound(snd_lightning, 20, false);
     }
 }
 
 function scr_playerUpdateMovementVectors() {
-    totalMoveSpeed = xx + yy;
-    
     if (left_pressed) {
-        lastMovedDirection = 0;
-        sprite_index = spr_player_walk_l;
+    	if (!walkAnimationOverride) {
+        	sprite_index = spr_player_walk_l;
+    	}
+    	
         image_speed = ANIM_SPEED_RUNNING;
         
         if (xx > -maxMoveSpeed) {
@@ -108,8 +201,10 @@ function scr_playerUpdateMovementVectors() {
         }
     }
     if (right_pressed) {
-        lastMovedDirection = 1;
-        sprite_index = spr_player_walk_r;
+    	if (!walkAnimationOverride) {
+        	sprite_index = spr_player_walk_r;
+    	}
+    	
         image_speed = ANIM_SPEED_RUNNING;
         
         if (xx < maxMoveSpeed) {
@@ -129,8 +224,10 @@ function scr_playerUpdateMovementVectors() {
     }
     
     if (up_pressed) {
-        lastMovedDirection = 2;
-        sprite_index = spr_player_walk_b;
+    	if (!walkAnimationOverride) {
+        	sprite_index = spr_player_walk_b;
+    	}
+    	
         image_speed = ANIM_SPEED_RUNNING;
         
         if (yy > -maxMoveSpeed) {
@@ -140,8 +237,10 @@ function scr_playerUpdateMovementVectors() {
         }
     }
     if (down_pressed) {
-        lastMovedDirection = 3;
-        sprite_index = spr_player_walk_f;
+    	if (!walkAnimationOverride) {
+        	sprite_index = spr_player_walk_f;
+    	}
+    	
         image_speed = ANIM_SPEED_RUNNING;
         
         if (yy < maxMoveSpeed) {
@@ -174,7 +273,6 @@ function scr_playerCollisionChecks() {
 }
 
 function scr_playerUnstuck() {
-    show_debug_message("Corner");
     x -= xx;
 }
 
@@ -192,6 +290,7 @@ function scr_playerTakeDamage() {
         invulnerableTimer = iFrameCount;
         
         audio_play_sound(snd_hurt, 10, false);
+		scr_vibrateGamepadSeconds(0.2);
         
         if (xx != 0) {
             xx *= -damageKnockback;

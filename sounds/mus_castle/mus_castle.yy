@@ -11,7 +11,7 @@
     "path": "audiogroups/audiogroup_default",
   },
   "soundFile": "mus_castle.mp3",
-  "duration": 80.01803,
+  "duration": 80.01806,
   "parent": {
     "name": "Music",
     "path": "folders/Sounds/Music.yy",

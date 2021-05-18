@@ -13,6 +13,8 @@ chosenPointY = y;
 
 disabled = true;
 
+drawExclamation = false;
+
 ANIM_SPEED_IDLE = 1;
 ANIM_SPEED_WALKING = 1.5;
 ANIM_SPEED_CHARGE = 3;

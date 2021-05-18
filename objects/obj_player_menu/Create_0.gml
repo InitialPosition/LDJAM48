@@ -16,3 +16,5 @@ xx = 0;
 yy = 0;
 
 maxMoveSpeed = 3;
+
+walkAnimationOverride = false;

@@ -5,7 +5,7 @@ function scr_shopGetRandomItem(includeHP) {
     if (includeHP) {
         return irandom(itemCount - 1);
     } else {
-        return irandom_range(1, itemCount - 1);
+    	return irandom_range(1, itemCount - 1);
     }
 }
 
@@ -17,6 +17,7 @@ function scr_shopLoadItems() {
         item[2][1] = 30;
         item[3][1] = 20;
         item[4][1] = 65;
+        item[5][1] = 70;
     }
     else if (obj_gameStats.currentFloor < global.END_LEVELS_BEGIN) {
         item[0][1] = 25;
@@ -24,12 +25,14 @@ function scr_shopLoadItems() {
         item[2][1] = 50;
         item[3][1] = 50;
         item[4][1] = 80;
+        item[5][1] = 80;
     } else {
 		item[0][1] = 30;
         item[1][1] = 80;
         item[2][1] = 60;
         item[3][1] = 60;
         item[4][1] = 100;
+        item[5][1] = 120;
 	}
     
     item[0][0] = "RESTORES 1 HP";
@@ -46,6 +49,9 @@ function scr_shopLoadItems() {
     
     item[4][0] = "LONGER ATTACK RANGE";
     item[4][2] = spr_item_range_up;
+    
+    item[5][0] = "ATTACK SPEED UP";
+    item[5][2] = spr_item_attack_speed_up;
 }
 
 function scr_shopPurchaseItem(itemID) {
@@ -62,6 +68,7 @@ function scr_shopPurchaseItem(itemID) {
             }
             
             obj_gameStats.gold -= other.price;
+            
             obj_gameStats.hitpoints = min(obj_gameStats.hitpoints + 2, obj_gameStats.maxHitpoints);
             
             return 0;
@@ -69,15 +76,17 @@ function scr_shopPurchaseItem(itemID) {
         
         case 1:
             obj_gameStats.gold -= other.price;
+            
             obj_gameStats.maxHitpoints += 2;
-            obj_gameStats.hitpoints = obj_gameStats.maxHitpoints;
+			obj_gameStats.hitpoints = min(obj_gameStats.hitpoints + 2, obj_gameStats.maxHitpoints);
             
             return 0;
             break;
         
         case 2:
             obj_gameStats.gold -= other.price;
-            obj_gameStats.playerSpeed += 0.1;
+            
+            obj_gameStats.playerSpeed += 0.15;
             
             with (obj_player) {
                 scr_playerUpdateMoveSpeed();
@@ -88,6 +97,7 @@ function scr_shopPurchaseItem(itemID) {
         
         case 3:
             obj_gameStats.gold -= other.price;
+            
             obj_gameStats.batRepellant = obj_gameStats.currentFloor + 5;
             
             return 0;
@@ -95,9 +105,20 @@ function scr_shopPurchaseItem(itemID) {
         
         case 4:
             obj_gameStats.gold -= other.price;
-            obj_gameStats.attackLength += 0.1;
+            
+            obj_gameStats.attackLength += 0.15;
             
             return 0;
             break;
+        
+        case 5:
+        	obj_gameStats.gold -= other.price;
+        	
+        	obj_gameStats.attackSpeedLevel++;
+        	obj_gameStats.attackSpeed = max(obj_gameStats.baseAttackSpeed - obj_gameStats.attackSpeedLevel, 2);
+        	obj_player.attackCooldown = obj_gameStats.attackSpeed;
+        	
+        	return 0;
+        	break;
     }
 }

@@ -8,33 +8,25 @@ function scr_windowModifier_setWindowSize(width, height) {
 function scr_windowModifier_getResolutionForIndex(index) {
     // declare width/height array
 
-    // 426x240
-    resolution[0][0] = 426;
-    resolution[0][1] = 240;
-
     // 640x360
-    resolution[1][0] = 640;
-    resolution[1][1] = 360;
-
-    // 896x504
-    resolution[2][0] = 896;
-    resolution[2][1] = 504;
+    resolution[0][0] = 640;
+    resolution[0][1] = 360;
 
     // 1280x720
-    resolution[3][0] = 1280;
-    resolution[3][1] = 720;
+    resolution[1][0] = 1280;
+    resolution[1][1] = 720;
 
     // 1920x1080
-    resolution[4][0] = 1920;
-    resolution[4][1] = 1080;
+    resolution[2][0] = 1920;
+    resolution[2][1] = 1080;
 
     // 2560x1440
-    resolution[5][0] = 2560;
-    resolution[5][1] = 1440;
+    resolution[3][0] = 2560;
+    resolution[3][1] = 1440;
 
     // 3840x2160
-    resolution[6][0] = 3840;
-    resolution[6][1] = 2160;
+    resolution[4][0] = 3840;
+    resolution[4][1] = 2160;
 
     requested_resolution[0] = resolution[index][0];
     requested_resolution[1] = resolution[index][1];
@@ -49,7 +41,7 @@ function scr_getCurrentResolutionAsString() {
 
 function scr_getIndexForResolutionString(resString) {
 	var i;
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < 4; i++) {
 		currentResStr = scr_windowModifier_getResolutionForIndex(i);
 		if (string(currentResStr[0]) + "x" + string(currentResStr[1]) == resString) {
 			return i;

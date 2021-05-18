@@ -11,7 +11,7 @@
     "path": "audiogroups/audiogroup_default",
   },
   "soundFile": "mus_shop.mp3",
-  "duration": 34.9306755,
+  "duration": 34.9307137,
   "parent": {
     "name": "Music",
     "path": "folders/Sounds/Music.yy",

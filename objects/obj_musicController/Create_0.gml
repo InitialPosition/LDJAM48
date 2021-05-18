@@ -10,6 +10,13 @@ switch (room) {
     case rm_garden6:
     case rm_garden7:
     case rm_garden8:
+    case rm_garden9:
+    case rm_garden10:
+    case rm_garden11:
+    case rm_garden12:
+    case rm_garden13:
+    case rm_garden14:
+    case rm_garden15:
         if (!audio_is_playing(mus_garden)) {
 			audio_stop_all();
             audio_play_sound(mus_garden, 20, 1);

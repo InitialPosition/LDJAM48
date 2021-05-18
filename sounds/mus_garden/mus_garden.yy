@@ -11,7 +11,7 @@
     "path": "audiogroups/audiogroup_default",
   },
   "soundFile": "mus_garden.mp3",
-  "duration": 80.85395,
+  "duration": 80.85398,
   "parent": {
     "name": "Music",
     "path": "folders/Sounds/Music.yy",

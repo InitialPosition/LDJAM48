@@ -1,3 +1,3 @@
 /// @description Punch Mobs
 
-scr_handleEnemyCollision();
+//scr_handleEnemyCollision();

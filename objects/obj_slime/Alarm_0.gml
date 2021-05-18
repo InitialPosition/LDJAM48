@@ -1,6 +1,5 @@
-/// @description Fire periodically 
+/// @description Telegraph jump 
 
-scr_slimeHop(false, false);
-hopSpeed = 3;
+image_speed = ANIM_SPEED_ATTACK;
 
-alarm[0] = hopTimer;
+alarm[1] = hopTelegraphTime;

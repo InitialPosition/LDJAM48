@@ -50,4 +50,6 @@ vsp = random_range(-coinBaseSpeed, coinBaseSpeed);
 
 coinSlowDown = 1.1;
 
-rayCollectable = false;
+image_speed = random_range(0.9, 1.1);
+
+collectable = false;

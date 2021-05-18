@@ -1,6 +1,8 @@
 /// @description 
 
-selection++;
-if (selection > 4) {
-    selection = 0;
+if (!lock) {
+	selection++;
+	if (selection > 5) {
+	    selection = 0;
+	}
 }

@@ -8,7 +8,7 @@ function scr_particlesBGMist(hue, sat, val) {
     part_type_shape(particle, pt_shape_pixel);
     part_type_alpha3(particle, 0, 1, 0);
     part_type_color_hsv(particle, hue, hue + 30, sat, sat + 30, val, val + 30);
-    part_type_size(particle, 2, 2, 0.01, 0);
+    part_type_size(particle, 1, 2, 0.01, 0);
     part_type_direction(particle, 0, 360, 0, 0);
     part_type_speed(particle, 0.2, 0.3, 0, 0);
     part_type_life(particle, 120, 180);

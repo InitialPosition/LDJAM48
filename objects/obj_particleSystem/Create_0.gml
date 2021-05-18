@@ -1,11 +1,11 @@
 /// @description Create particle system and load particles
 
 system = part_system_create();
-part_system_depth(system, 500);
+part_system_depth(system, 100);
 
 emit = part_emitter_create(system);
 
-partAmount = 2;
+partAmount = 1;
 
 if (instance_exists(obj_gameStats)) {
 	if (obj_gameStats.currentFloor < global.CASTLE_LEVELS_BEGIN) {
@@ -16,7 +16,7 @@ if (instance_exists(obj_gameStats)) {
 	}
 	else {
 		particle = scr_particlesBGMist(180, 225, 200);
-		partAmount = 4;
+		partAmount = 2;
 	}
 } else {
 	particle = scr_particlesBGMist(0, 0, 200);

@@ -4,4 +4,6 @@ if (room != rm_shop) {
     image_yscale = obj_gameStats.attackLength;
 }
 hasHitButton = false;
+
 alarm[0] = 2;
+alarm[1] = 1;

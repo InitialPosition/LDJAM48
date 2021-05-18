@@ -1,5 +1,6 @@
 /// @description Draw description
 
+draw_set_font(fnt_GUI);
 if (itemDesc != "") {
 	draw_set_halign(fa_left);
 	

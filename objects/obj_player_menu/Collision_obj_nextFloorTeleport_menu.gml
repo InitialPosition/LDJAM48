@@ -15,4 +15,8 @@ if (other.image_index == 1) {
 		
 		fade_initializeFade(nextRoom, c_black, 2000);
 	}
+	
+	// animate going into the trapdoor
+    x = lerp(x, other.x + 3, 0.1);
+    y = lerp(y, other.y, 0.1);
 }
